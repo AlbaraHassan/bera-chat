@@ -32,16 +32,15 @@ const SignUp = () => {
         if( pic.type ==="image/jpeg" || pic.type ==="image/jpg" || pic.type ==="image/png"){
             const data = new FormData();
             data.append("file", pic);
-            data.append("upload_preset", "BeraChat");
-            data.append("cloud_name", "dgweglvnu" );
+            data.append("upload_preset", "berachat");
             fetch("https://api.cloudinary.com/v1_1/dgweglvnu/image/upload", {
-                method: "post",
+                method: "POST",
                 body: data
-            }).then((result) => {result.json()}).then((data) => {
+            }).then(res => res.json()/* or 👉 {return res.json()} */ ).then(data => {
                 setpic(data.url.toString());
                 console.log(data.url.toString());
                 setloading(false);
-            }).catch((err) => {
+            }).catch(err => {
                 console.log(err);
                 setloading(false);
             });
