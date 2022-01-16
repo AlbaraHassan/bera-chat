@@ -3,7 +3,7 @@ import { VStack } from "@chakra-ui/layout"
 import { FormControl, FormLabel } from "@chakra-ui/form-control"
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/input";
 import { useState } from "react";
-import { Button } from '@chakra-ui/react'
+import { Button, useToast } from '@chakra-ui/react'
 
 const SignUp = () => {
     const [show, setshow] = useState(false);
@@ -12,8 +12,50 @@ const SignUp = () => {
     const [password, setpassword] = useState();
     const [confirmpassword, setconfirmpassword] = useState();
     const [pic, setpic] = useState();
+    const [loading, setloading] = useState(false)
+    const toast = useToast()
+
     const handleShow = () => setshow(!show);
-    const postDetails = (pics) => {
+    const postDetails = (pic) => {
+        setloading(true);
+        if(pic.type === undefined){
+            toast({
+                title: 'Please select an image !!',
+                status: 'warning',
+                duration: 5000,
+                isClosable: true,
+                position: "top-right"
+              });
+              return;
+        };
+
+        if( pic.type ==="image/jpeg" || pic.type ==="image/jpg" || pic.type ==="image/png"){
+            const data = new FormData();
+            data.append("file", pic);
+            data.append("upload_preset", "BeraChat");
+            data.append("cloud_name", "dgweglvnu" );
+            fetch("https://api.cloudinary.com/v1_1/dgweglvnu/image/upload", {
+                method: "post",
+                body: data
+            }).then((result) => {result.json()}).then((data) => {
+                setpic(data.url.toString());
+                console.log(data.url.toString());
+                setloading(false);
+            }).catch((err) => {
+                console.log(err);
+                setloading(false);
+            });
+        } else {
+            toast({
+                title: 'Please select an image !!',
+                status: 'warning',
+                duration: 5000,
+                isClosable: true,
+                position: "top-right"
+              });
+              setloading(false);
+              return;
+        }
 
     };
     
@@ -74,7 +116,7 @@ const SignUp = () => {
 
             </FormControl>
 
-            <Button colorScheme={"blue"} width={"100%"} style={{marginTop: 15}} onClick={submitHandler}>Sign Up</Button>
+            <Button colorScheme={"blue"} width={"100%"} style={{marginTop: 15}} onClick={submitHandler} isLoading={loading}>Sign Up</Button>
 
         </VStack>
     )
