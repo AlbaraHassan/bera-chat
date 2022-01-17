@@ -60,6 +60,14 @@ const SignUp = () => {
     
     const submitHandler = () => {};
 
+    // this is the same as in line 111
+    const showFunction = () => {
+        if (show){
+            return "Hide"
+        }else{
+            return "Show"
+        }
+    }
 
     return (
         <VStack spacing={"5px"}>
@@ -84,7 +92,7 @@ const SignUp = () => {
                         onChange={(e) => { setpassword(e.target.value) }} />
                     <InputRightElement>
                         <Button h="1.75rem" size="xs" variant="ghost" onClick={handleShow}>
-                            {show ? "Hide" : "Show"}
+                            {showFunction()}
                         </Button>
                     </InputRightElement>
                 </InputGroup>
