@@ -9,6 +9,7 @@ import axios from "axios";
 
 const SignUp = () => {
     const [ show, setshow ] = useState(false);
+    const [ show1, setshow1 ] = useState(false);
     const [ name, setname ] = useState();
     const [ email, setemail ] = useState();
     const [ password, setpassword ] = useState();
@@ -19,6 +20,7 @@ const SignUp = () => {
     const history = useHistory();
 
     const handleShow = () => setshow(!show);
+    const handleShow1 = () => setshow1(!show1);
     const postDetails = (pic) => {
         setloading(true);
         if (pic.type === undefined) {
@@ -161,11 +163,11 @@ const SignUp = () => {
             <FormControl id="confirmpassword" isRequired>
                 <FormLabel>Confirm Password</FormLabel>
                 <InputGroup>
-                    <Input type={show ? "text" : "password"} placeholder={"Enter Your Password again"}
+                    <Input type={show1 ? "text" : "password"} placeholder={"Enter Your Password again"}
                         onChange={(e) => { setconfirmpassword(e.target.value) }} />
                     <InputRightElement>
-                        <Button h="1.75rem" size="xs" variant="ghost" onClick={handleShow}>
-                            {show ? "Hide" : "Show"}
+                        <Button h="1.75rem" size="xs" variant="ghost" onClick={handleShow1}>
+                            {show1 ? "Hide" : "Show"}
                         </Button>
                     </InputRightElement>
                 </InputGroup>
@@ -180,7 +182,7 @@ const SignUp = () => {
 
             </FormControl>
 
-            <Button colorScheme={"blue"} width={"100%"} style={{ marginTop: 15 }} onClick={submitHandler} isLoading={loading}>Sign Up</Button>
+            <Button colorScheme={"blackAlpha"} width={"100%"} style={{ marginTop: 15 }} onClick={submitHandler} isLoading={loading}>Sign Up</Button>
 
         </VStack>
     )

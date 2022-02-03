@@ -39,8 +39,8 @@ const Login = () => {
 
             </FormControl>
 
-            <Button colorScheme={"blue"} width={"100%"} style={{ marginTop: 15 }} onClick={submitHandler}>Login</Button>
-            <Button colorScheme={"purple"} variant= "outline" width={"100%"} style={{ marginTop: 15 }} onClick={() => { setemail("guest@guest.com"); setpassword("12345678") }}>Guest User</Button>
+            <Button colorScheme={"blackAlpha"} width={"100%"} style={{ marginTop: 15 }} onClick={submitHandler}>Login</Button>
+            <Button colorScheme={"blackAlpha"} variant= "outline" width={"100%"} style={{ marginTop: 15 }} onClick={() => { setemail("guest@guest.com"); setpassword("12345678") }}>Guest User</Button>
 
         </VStack>
     )
