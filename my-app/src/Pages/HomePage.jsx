@@ -31,10 +31,10 @@ const HomePage = () => {
                 borderWidth="1px"
                 bg={"#FFFAF0"}
                 boxShadow={"inner"}>
-                <Tabs isFitted variant='enclosed' colorScheme={"purple"}>
+                <Tabs isFitted variant='enclosed' colorScheme={"blackAlpha"}>
                     <TabList mb='1em'>
                         <Tab onClick={onToggle} isDisabled={isOpen?false:true} >Login</Tab>
-                        <Tab onClick={onToggle} isDisabled={!isOpen?false:true}>Sign Up</Tab>
+                        <Tab onClick={onToggle} isDisabled={isOpen?true:false}>Sign Up</Tab>
                     </TabList>
                     <TabPanels>
                         <TabPanel>

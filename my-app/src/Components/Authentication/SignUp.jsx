@@ -109,7 +109,7 @@ const SignUp = () => {
 
         } catch (err) {
             toast({
-                title: `ERROR: ${err}`,
+                title: `ERROR: ${err.response.data.message}`,
                 status: "error",
                 duration: 5000,
                 position: "top-right"
