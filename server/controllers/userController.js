@@ -4,12 +4,15 @@ const {generateToken} = require('../config/generateToken');
 
 const registerUser = asyncHandler(async (req, res) => {
     const { name, email, password, picture } = req.body;
+    console.log(name);
+    console.log(email);
+    console.log(picture);
     if (!name || !email || !password) {
         res.status(400);
         throw new Error("Enter all the required fields!");
     };
 
-    const userExists = await User.findOne({ email })
+    const userExists = await User.findOne({ email });
 
     if (userExists) {
         res.status(400);
@@ -54,17 +57,19 @@ const authUser = asyncHandler(async (req, res) => {
 
 });
 
-const allUsers = asyncHandler(async(req, res) => {
-    const keyword = req.query.search ?{
-        $or: [
-            {name: {$regex: req.query.search, $options: "i"}},
-            {email: {$regex: req.query.search, $options: "i"}}
-        ]
-    }: {};
-
-    const users = await User.find(keyword).find({_id:{$ne:req.user._id}});
+const allUsers = asyncHandler(async (req, res) => {
+    const keyword = req.query.search
+      ? {
+          $or: [
+            { name: { $regex: req.query.search, $options: "i" } },
+            { email: { $regex: req.query.search, $options: "i" } },
+          ],
+        }
+      : {};
+      
+  
+    const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
     res.send(users);
-
-});
+  });
 
 module.exports = { registerUser, authUser, allUsers }

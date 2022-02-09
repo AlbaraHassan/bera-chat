@@ -11,10 +11,11 @@ const accessChat = expressAsyncHandler(async (req, res) => {
 
     let isChat = await Chat.find({
         isGroupChat: false,
-        $and: [
-            { userList: { $elematch: { $eq: req.user._id } } },
-            { userList: { $elematch: { $eq: userid } } }
-        ],
+        // $and: [
+        //     { usersList: { $elematch: { $eq: req.user._id } } },
+        //     { usersList: { $elematch: { $eq: userid } } }
+        // ],
+        userList: [req.user._id, userid]
 
     }).populate("userList", "-password").populate("latestMessage");
     isChat = await User.populate(isChat, {
@@ -44,19 +45,23 @@ const accessChat = expressAsyncHandler(async (req, res) => {
 
 const fetchChats = expressAsyncHandler(async (req, res) => {
     try {
-        Chat.find({ userList: { $eq: req.user._id } }).populate("userList", "-password").populate("groupAdmin", "-password").populate("latestMessage").sort({ updatedAt: -1 }).then(async (results) => {
-            results = await User.populate(results, {
-                path: "latestMessage.sender",
-                select: "name pic email"
-            });
-            res.status(200).send(results)
+      Chat.find({ usersList: { $elemMatch: { $eq: req.user._id } } })
+        .populate("userList", "-password")
+        .populate("groupAdmin", "-password")
+        .populate("latestMessage")
+        .sort({ updatedAt: -1 })
+        .then(async (results) => {
+          results = await User.populate(results, {
+            path: "latestMessage.sender",
+            select: "name pic email",
+          });
+          res.status(200).send(results);
         });
-    } catch (err) {
-        res.status(400);
-        throw new Error(err.message);
+    } catch (error) {
+      res.status(400);
+      throw new Error(error.message);
     }
-});
-
+  });
 const createGroupChat = expressAsyncHandler(async (req, res) => {
     if (!req.body.userList || !req.body.name) {
         return res.status(400).send({ message: "Please fill all the fields" })
@@ -65,7 +70,7 @@ const createGroupChat = expressAsyncHandler(async (req, res) => {
     let userList = JSON.parse(req.body.userList)
 
     if (userList.length < 2) {
-        return res.status(400).send({ message: "More than two users are requierd for group chats" })
+        return res.status(400).send({ message: "More than two usersList are requierd for group chats" })
     }
 
     userList.push(req.user);

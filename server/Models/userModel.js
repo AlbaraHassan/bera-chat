@@ -5,7 +5,7 @@ const userSchema = mongoose.Schema({
     name : {type: String, required: true},
     email : {type: String, required: true, unique: true},
     password: {type: String, required: true},
-    profilePic: {type: String, default: "https://icon-library.com/images/lion-595b40b75ba036ed117d858a.svg.svg"}
+    picture: {type: String}
 }, {timestamps: true});
 
 userSchema.methods.matchPassword = async function (enteredPassword){

@@ -22,7 +22,7 @@ const Login = () => {
                 title: "Please fill the fields",
                 status: "error",
                 duration: 5000,
-                position: "top-right"
+                position: "bottom"
             });
             setloading(false);
             return;
@@ -41,7 +41,7 @@ const Login = () => {
                 title: `Welcome ${name}`,
                 status: "success",
                 duration: 5000,
-                position: "top-right"
+                position: "bottom"
             });
             localStorage.setItem("userInfo", JSON.stringify(data))
             setloading(false);
@@ -52,7 +52,7 @@ const Login = () => {
                 title: `ERROR: ${err.resoponse.data.message}`,
                 status: "error",
                 duration: 5000,
-                position: "top-right"
+                position: "bottom"
             });
             setloading(false); 
         }

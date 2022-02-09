@@ -1,17 +1,25 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Container, Box, Text, Tabs, TabList, TabPanels, Tab, TabPanel, Collapse } from "@chakra-ui/react"
 import { useDisclosure } from '@chakra-ui/react'
 import Login from "../Components/Authentication/Login"
 import  SignUp  from "../Components/Authentication/SignUp"
+import { useHistory } from 'react-router-dom'
 
 const HomePage = () => {
-    const { isOpen, onToggle } = useDisclosure()
+    const { isOpen, onToggle } = useDisclosure();
+    const history = useHistory()
+    useEffect(() => {
+      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+      if (userInfo){
+          history.push("/chats");
+      }
+    }, [history]);
+    
     return (
         <Container maxW="3xl" centerContent>
             <Box d="flex"
                 justifyContent="center"
                 p={5}
-                bg={"White"}
                 w="100%"
                 m="40px 0 15px 0"
                 borderRadius="3xl"
@@ -24,7 +32,7 @@ const HomePage = () => {
                     color="Black">Bera Chat</Text>
             </Box>
 
-            <Box bg="White"
+            <Box
                 w="100%"
                 p={5}
                 borderRadius="3xl"

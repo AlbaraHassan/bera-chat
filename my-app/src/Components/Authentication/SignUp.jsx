@@ -21,29 +21,29 @@ const SignUp = () => {
 
     const handleShow = () => setshow(!show);
     const handleShow1 = () => setshow1(!show1);
-    const postDetails = (pic) => {
+    const postDetails = async(pics) => {
         setloading(true);
-        if (pic.type === undefined) {
+        if (pics === undefined) {
             toast({
                 title: 'Please select an image !!',
                 status: 'warning',
                 duration: 5000,
                 isClosable: true,
-                position: "top-right"
+                position: "bottom"
             });
             return;
         };
 
-        if (pic.type === "image/jpeg" || pic.type === "image/jpg" || pic.type === "image/png") {
+        if (pics.type === "image/jpeg" || pics.type === "image/jpg" || pics.type === "image/png") {
             const data = new FormData();
-            data.append("file", pic);
+            data.append("file", pics);
             data.append("upload_preset", "berachat");
             fetch("https://api.cloudinary.com/v1_1/dgweglvnu/image/upload", {
                 method: "POST",
                 body: data
             }).then(res => res.json()/* or 👉 {return res.json()} */).then(data => {
-                setpic(data.url.toString());
-                console.log(data.url.toString());
+                const pic = data.url.toString()
+                setpic(pic);
                 setloading(false);
             }).catch(err => {
                 console.log(err);
@@ -55,7 +55,7 @@ const SignUp = () => {
                 status: 'warning',
                 duration: 5000,
                 isClosable: true,
-                position: "top-right"
+                position: "bottom"
             });
             setloading(false);
             return;
@@ -70,7 +70,7 @@ const SignUp = () => {
                 title: "Please fill out the required fields",
                 status: "warning",
                 duration: 5000,
-                position: "top-right"
+                position: "bottom"
             });
             setloading(false);
             return;
@@ -81,7 +81,7 @@ const SignUp = () => {
                 title: "Passwords do not match",
                 status: "error",
                 duration: 5000,
-                position: "top-right"
+                position: "bottom"
             })
             setloading(false);
             return;
@@ -93,26 +93,26 @@ const SignUp = () => {
                     "Content-type": "application/json"
                 }
             };
-
-            const { data } = await axios.post("/api/user", {name, email, password, pic}, config)
+            const picture = pic
+            const { data } = await axios.post("/api/user", {name, email, password, picture}, config)
 
             toast({
                 title: "Regestiration is succesful",
                 status: "success",
                 duration: 5000,
-                position: "top-right"
+                position: "bottom"
             });
 
             localStorage.setItem("userInfo", JSON.stringify(data));
             setloading(false);
             history.push("/chats");
-
+            
         } catch (err) {
             toast({
                 title: `ERROR: ${err.response.data.message}`,
                 status: "error",
                 duration: 5000,
-                position: "top-right"
+                position: "bottom"
             });
             setloading(false);
         }
@@ -172,7 +172,7 @@ const SignUp = () => {
                     </InputRightElement>
                 </InputGroup>
 
-                <FormControl id="pic">
+                <FormControl id="picture">
                     <FormLabel>Profile Picture</FormLabel>
                     <Input
                         type={"file"} p={1.5} accept="image/*" onChange={(e) => postDetails(e.target.files[ 0 ])} />
