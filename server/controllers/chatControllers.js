@@ -45,7 +45,7 @@ const accessChat = expressAsyncHandler(async (req, res) => {
 
 const fetchChats = expressAsyncHandler(async (req, res) => {
     try {
-      Chat.find({ usersList: { $elemMatch: { $eq: req.user._id } } })
+      Chat.find({ userList: { $elemMatch: { $eq: req.user._id } } })
         .populate("userList", "-password")
         .populate("groupAdmin", "-password")
         .populate("latestMessage")
@@ -127,7 +127,7 @@ const removeFromGroup = expressAsyncHandler(async(req, res) => {
         }, { new: true }
     ).populate("userList", "-password").populate("groupAdmin", "-password");
     if (!removed){
-        res.status(400)
+        res.status(404)
         throw new Error("Chat not found")
     } else {
         res.json(removed)

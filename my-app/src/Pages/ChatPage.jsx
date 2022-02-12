@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from "axios"
 import { ChatState } from '../Context/charProvider';
 import SideDrawer from "../Components/miscellaneous/SideDrawer"
@@ -10,7 +10,7 @@ import { useHistory } from 'react-router-dom';
 
 const ChatPage = () => {
    const { user } = ChatState();
-   
+   const [fetchAgain, setFetchAgain] = useState(false);
 
 
 
@@ -18,8 +18,8 @@ const ChatPage = () => {
         <div style={{width: "100%"}}>
             {user && <SideDrawer/>}
             <Box d="flex" justifyContent={"space-between"} w="100%" h="100vh" p="10px" >
-                {user && <MyChats/>}
-                {user && <ChatBox/>}
+                {user && <MyChats fetchAgain={fetchAgain}/>}
+                {user && <ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain}/>}
             </Box>
         </div>
     )

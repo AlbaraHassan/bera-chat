@@ -21,7 +21,6 @@ const ProfileModal = ({user, children}) => {
         <>
             {children? <span onClick={onOpen}>{children}</span> : 
             <IconButton d={{base: "flex"}} icon={<ViewIcon/>} onClick={onOpen} />}
-            <Button onClick={onOpen}>Profile</Button>
       <Modal
         isCentered
         onClose={onClose}
@@ -30,7 +29,7 @@ const ProfileModal = ({user, children}) => {
         size={"lg"}
       >
         <ModalOverlay />
-        <ModalContent h={"420px"}>
+        <ModalContent h={"420px"} ontSize={"34px"} fontFamily={"monospace"} d={"flex"} justifyContent={"center"}  bg={"#FFFAF0"} borderRadius={"3xl"} p={5}>
           <ModalHeader fontSize={"40px"} fontFamily={"monospace"} d="flex" justifyContent={"center"}>{user.name}</ModalHeader>
           <ModalCloseButton />
           <ModalBody d="flex" flexDir={"column"} alignItems={"center"} justifyContent={"space-between"}>

@@ -86,6 +86,7 @@ const SideDrawer = () => {
     };
 
     return (<>
+    
         <Box d="flex" justifyContent={"space-between"} alignItems={"center"} bg={"#FFFAF0"} w={"100%"} p="5px 10px 5px 10px" borderRadius="3xl" boxShadow={"inner"}>
             <Tooltip label={"Search Users"} hasArrow placement={"bottom"}>
                 <Button variant={"ghost"} colorScheme={"blackAlpha"} onClick={onOpen}>
@@ -106,7 +107,7 @@ const SideDrawer = () => {
                     <MenuButton as={Button} rightIcon={<ChevronDownIcon />} bg={"#FFFAF0"}>
                         <Avatar size={"sm"} cursor={"pointer"} name={user.name} src={user.picture} />
                     </MenuButton>
-                    <MenuList>
+                    <MenuList bg={"#FFFAF0"}>
                         <ProfileModal user={user}>
                             <MenuItem>My Profile</MenuItem>
                         </ProfileModal>
@@ -117,12 +118,12 @@ const SideDrawer = () => {
             </div>
         </Box>
 
-        <Drawer placement="left" onClose={onClose} isOpen={isOpen} >
+        <Drawer placement="top" onClose={onClose} isOpen={isOpen} >
             <DrawerOverlay />
-            <DrawerContent bg={"#FFFAF0"} borderRadius={"3xl"}>
+            <DrawerContent bg={"#FFFAF0"} borderRadius={"3xl"} w={"50%"} marginLeft={"25%"} >
                 <DrawerHeader borderBottomWidth={"1px"}>Search Users</DrawerHeader>
                 <DrawerBody>
-                    <Box d="flex" p={2}>
+                    <Box d="flex" p={2}  >
                         <Input placeholder={"Search by name"} mr={2} value={search} onChange={(e) => {
                             setsearch(e.target.value)
                         }}></Input>

@@ -89,6 +89,7 @@ const SignUp = () => {
 
         try {
             const config = {
+                method:"POST",
                 headers: {
                     "Content-type": "application/json"
                 }

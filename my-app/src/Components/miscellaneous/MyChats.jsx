@@ -7,7 +7,7 @@ import { ChatState } from '../../Context/charProvider';
 import ChatLoading from './ChatLoading';
 import GroupChatModal from './GroupChatModal';
 
-const MyChats = () => {
+const MyChats = ({ fetchAgain }) => {
     const { user, selectedChat, setSelectedChat, chats, setChats } = ChatState();
     const [ loggedUser, setLoggedUser ] = useState();
     const toast = useToast();
@@ -36,7 +36,7 @@ const MyChats = () => {
     useEffect(() => {
         setLoggedUser(JSON.parse(localStorage.getItem("userInfo")))
         fetchChats();
-    }, []);
+    }, [ fetchAgain ]);
 
     return (
         <Box d={{ base: selectedChat ? "none" : "flex", md: "flex" }}
@@ -62,7 +62,7 @@ const MyChats = () => {
                                 color={selectedChat === chat ? "white" : "black"}
                                 px={3} py={3} borderRadius={"xl"} key={chat._id} boxShadow={selectedChat === chat ? "lg" : "inner"}>
                                 <Text>
-                                    {!chat.isGroupChat ? getSender(loggedUser, chat.userList) : chat.chatName}
+                                    {!chat.isGroupChat ? getSender(loggedUser, chat.userList) : <Text>{chat.chatName} 🌐</Text>}
                                 </Text>
 
                             </Box>
