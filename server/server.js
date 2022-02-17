@@ -49,6 +49,16 @@ io.on("connection", (socket) => {
             socket.in(user._id).emit("message recieved", message);
         })
     })
+
+    socket.on("typing", (room) => socket.in(room).emit("typing"))
+    socket.on("stop typing", (room) => socket.in(room).emit("stop typing"))
+
+    socket.off("setup", () => {
+        console.log("DISCONNECTED");
+        socket.leave(userData._id)
+    })
+
+
 })
 
 app.get("/", (req, res) => {
