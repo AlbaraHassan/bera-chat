@@ -4,8 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server/server.js",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix ../my-app && npm run build --prefix my-app"
+    "start": "nodemon server/server.js"
   },
   "author": "Albara Hassan",
   "license": "ISC",
