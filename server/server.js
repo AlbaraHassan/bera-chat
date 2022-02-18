@@ -7,6 +7,7 @@ const userRoutes = require('./routes/userRoutes');
 const chatRoutes = require("./routes/chatRoutes")
 const { notFound, errorHandler } = require('./middleware/errorMiddleWare')
 const messageRoutes = require("./routes/messageRoutes")
+const path = require("path")
 
 
 const app = express();
@@ -31,7 +32,7 @@ const io = require("socket.io")(server, {
 io.on("connection", (socket) => {
 
 
-    socket.on("setup", (userData)=>{
+    socket.on("setup", (userData) => {
         socket.join(userData._id);
         socket.emit("connected");
     });
@@ -41,11 +42,18 @@ io.on("connection", (socket) => {
         console.log("User join the room " + room);
     });
 
+    socket.on("leave chat", (room) => {
+        socket.leave(room);
+        console.log("LEFT " + room);
+    });
+
+
+
     socket.on("new message", (message) => {
         let chat = message.chat;
         if (!chat.userList) return console.log("chat.userList not defined");
         chat.userList.forEach(user => {
-            if(user._id == message.sender._id) return;
+            if (user._id == message.sender._id) return;
             socket.in(user._id).emit("message recieved", message);
         })
     })
@@ -61,13 +69,28 @@ io.on("connection", (socket) => {
 
 })
 
-app.get("/", (req, res) => {
-    res.send("API is runnings");
-});
+
+
+
 
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
 
+const __dirname1 = path.resolve();
+
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static(path.join(__dirname1, "../my-app/build")));
+
+    app.get("*", (req, res) =>
+        res.sendFile(path.resolve(__dirname1, "../my-app", "build", "index.html"))
+    );
+} else {
+    app.get("/", (req, res) => {
+        res.send("API is running..");
+    });
+}
+
+
 app.use(notFound);
-app.use(errorHandler)
+app.use(errorHandler);

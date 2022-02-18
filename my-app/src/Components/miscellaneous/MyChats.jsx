@@ -6,9 +6,12 @@ import { getSender } from '../../config/ChatLogic';
 import { ChatState } from '../../Context/charProvider';
 import ChatLoading from './ChatLoading';
 import GroupChatModal from './GroupChatModal';
+import NotificationBadge from "react-notification-badge"
+import {Effect} from "react-notification-badge"
+
 
 const MyChats = ({ fetchAgain }) => {
-    const { user, selectedChat, setSelectedChat, chats, setChats } = ChatState();
+    const { user, selectedChat, setSelectedChat, chats, setChats, notifications, setNotifications } = ChatState();
     const [ loggedUser, setLoggedUser ] = useState();
     const toast = useToast();
     const fetchChats = async () => {
@@ -56,13 +59,23 @@ const MyChats = ({ fetchAgain }) => {
             <Box d={"flex"} flexDir={"column"} p={3} bg={"#E8E8E8"} w={"100%"} h={"100%"} borderRadius={"xl"} overflowY={"hidden"} boxShadow={"inner"}>
                 {chats ? (
                     <Stack overflowY={"scroll"} py={4} px={10}>
-                        {chats.map((chat) => {
-                            return <Box onClick={() => setSelectedChat(chat)}
+                        
+                        { chats.map((chat) => {
+                            return <Box onClick={() => {
+                                setSelectedChat(chat)
+                                notifications.map(msg =>{
+                                    setNotifications(notifications.filter((m) => m !== msg))
+                                })
+                            }}
                                 cursor={"pointer"} bg={selectedChat === chat ? "#808080" : "#FFFAF0"}
                                 color={selectedChat === chat ? "white" : "black"}
                                 px={3} py={3} borderRadius={"xl"} key={chat._id} boxShadow={selectedChat === chat ? "lg" : "inner"}>
                                 <Text>
                                     {!chat.isGroupChat ? getSender(loggedUser, chat.userList) : <Text>{chat.chatName} 🌐</Text>}
+                                    {notifications.map((message) => {
+                                        if(message.chat._id === chat._id) return <NotificationBadge  count={1} effect={Effect.SCALE}/>
+                                    })}
+
                                 </Text>
 
                             </Box>

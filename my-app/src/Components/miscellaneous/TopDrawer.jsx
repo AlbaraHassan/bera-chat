@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Center, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, HStack, Input, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spinner, Text, toast, Tooltip, useDisclosure, useToast } from '@chakra-ui/react';
+import { Avatar, Box, Button, Center, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, effect, HStack, Input, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spinner, Text, toast, Tooltip, useDisclosure, useToast } from '@chakra-ui/react';
 import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons"
 import React, { useState } from 'react';
 import { ChatState } from '../../Context/charProvider';
@@ -7,6 +7,9 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import ChatLoading from './ChatLoading';
 import UserListItem from '../UserAvatar/UserListItem';
+import { getSender } from '../../config/ChatLogic';
+import {Effect} from "react-notification-badge"
+import NotificationBadge from "react-notification-badge"
 
 
 const SideDrawer = () => {
@@ -16,7 +19,7 @@ const SideDrawer = () => {
     const [ loadingChat, setloadingChat ] = useState();
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const { user, setSelectedChat, chats, setChats } = ChatState();
+    const { user, setSelectedChat, chats, setChats, notifications, setNotifications } = ChatState();
     const toast = useToast();
 
     const history = useHistory();
@@ -99,9 +102,20 @@ const SideDrawer = () => {
             <div>
                 <Menu>
                     <MenuButton p="1">
+                        <NotificationBadge count={notifications.length} effect={Effect.SCALE}/>
                         <BellIcon fontSize={"xl"} m={1} />
                     </MenuButton>
-                    {/* <MenuList></MenuList> */}
+                    <MenuList pl={2}>
+                        {!notifications.length ? "No new messages" : ""}
+                        {notifications.map((msg)=>{
+                            return <MenuItem key={notifications._id} onClick={() => {
+                                setSelectedChat(msg.chat);
+                                setNotifications(notifications.filter((m) => m !== msg))
+                            }}>
+                                {msg.chat.isGroupChat? `New message in ${msg.chat.chatName}` : `${getSender(user, msg.chat.userList)} sent a message` }
+                            </MenuItem>
+                        })}
+                    </MenuList>
                 </Menu>
                 <Menu >
                     <MenuButton as={Button} rightIcon={<ChevronDownIcon />} bg={"#FFFAF0"}>

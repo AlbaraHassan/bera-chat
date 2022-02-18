@@ -1,4 +1,4 @@
-import { Avatar, Tooltip } from '@chakra-ui/react';
+import { Avatar, Text, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 import ScrollableFeed from "react-scrollable-feed"
 import { isLastMessage, isSameSender, isSameSenderMargin, isSameUser } from '../config/ChatLogic';
@@ -17,9 +17,11 @@ const ScrollableChat = ({ messages }) => {
                             </Tooltip>
                         
                     }
-                    <span style={{background: `${message.sender._id === user._id? "#BEE3F8" : "#B9F5D0"}`, borderRadius:"20px", padding:"5px 15px", maxWidth: "75%", marginLeft: isSameSenderMargin(messages, message, index, user._id),
+                    <span style={{background: `${message.sender._id === user._id? "#FFFAF0" : "#808080"}`, borderRadius:"20px", padding:"5px 15px", maxWidth: "75%", marginLeft: isSameSenderMargin(messages, message, index, user._id),
                     marginTop: isSameUser(messages, message, index, user._id)? 3: 10}} >
+                        <Text textColor={message.sender._id === user._id ? "#808080" : "white"} fontWeight={"semibold"}>
                 {message.content}
+                </Text>
 
             </span>
                 </div>

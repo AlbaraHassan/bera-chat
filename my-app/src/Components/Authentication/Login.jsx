@@ -86,7 +86,8 @@ const Login = () => {
             </FormControl>
 
             <Button colorScheme={"blackAlpha"} width={"100%"} style={{ marginTop: 15 }} onClick={submitHandler}>Login</Button>
-            <Button colorScheme={"blackAlpha"} variant= "outline" width={"100%"} style={{ marginTop: 15 }} onClick={() => { setemail("guest@guest.com"); setpassword("guest"); submitHandler(); } }>Guest User</Button>
+            <Button colorScheme={"blackAlpha"} variant= "outline" width={"100%"} style={{ marginTop: 15 }} onClick={() => { setemail("guest@guest.com");
+            setpassword("guest");} }>Guest User</Button>
 
         </VStack>
     )

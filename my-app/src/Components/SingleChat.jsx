@@ -9,13 +9,15 @@ import axios from 'axios';
 import "./styles.css"
 import ScrollableChat from './ScrollableChat';
 import io from "socket.io-client";
+import Lottie from "react-lottie"
+import animationData from "./typingAnimation.json"
 
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = "https://bera-chat.herokuapp.com/";
 let socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
-    const { user, selectedChat, setSelectedChat } = ChatState();
+    const { user, selectedChat, setSelectedChat, notifications, setNotifications } = ChatState();
     const [ messages, setMessages ] = useState([]);
     const [ loading, setLoading ] = useState(false);
     const [ newMessage, setNewMessage ] = useState("");
@@ -24,6 +26,18 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     const [ typing, setTyping ] = useState(false);
     const [ sent, setSent ] = useState(false);
     const toast = useToast()
+    const defOp = {
+        loop: true,
+        autoplay: true,
+        animationData: animationData,
+        rendererSettings: {
+            preserveAspectRatio: "xMidYmid slice"
+        }
+
+    }
+    let temp;
+    
+    
 
 
     const sendMessage = async (event) => {
@@ -65,27 +79,29 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
     const typingHandler = async (msg) => {
         setNewMessage(msg.target.value);
+            if (!socketConnected) return;
 
-        if (!socketConnected) return;
-        
-        if (!typing) {
-            setTyping(true);
-            socket.emit("typing", selectedChat._id);
+            if (!typing) {
+                setTyping(true);
+                socket.emit("typing", selectedChat._id);
+            }
+
+            setTimeout(() => {
+                setTyping(false);
+                socket.emit("stop typing", selectedChat._id);
+            }, 6000)
+
         }
 
-        setTimeout(() => {
-            
-                socket.emit("stop typing", selectedChat._id);
-                setTyping(false);
-            
-        }, 3000)
-        
-    }
 
     const fetchMessages = async () => {
+        
         if (!selectedChat) {
             return;
         }
+        if(selectedChatCompare){
+        temp = selectedChatCompare._id
+    }
         try {
             setLoading(true);
             const config = {
@@ -97,6 +113,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             const { data } = await axios.get(`/api/message/${selectedChat._id}`, config)
             setMessages(data);
             setLoading(false);
+            socket.emit("leave chat", temp);
             socket.emit("join chat", selectedChat._id);
         } catch (err) {
             toast({
@@ -116,20 +133,24 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         socket.on("connected", () => setSocketConnected(true));
         socket.on("typing", () => setIstyping(true));
         socket.on("stop typing", () => setIstyping(false));
+        
 
     }, [])
 
     useEffect(() => {
         fetchMessages();
         selectedChatCompare = selectedChat
+        
     }, [ selectedChat ]);
-
 
 
     useEffect(() => {
         socket.on("message recieved", (message) => {
             if (!selectedChatCompare || selectedChatCompare._id !== message.chat._id) {
-                //give notification
+                if (!notifications.includes(message)) {
+                    setNotifications([ message, ...notifications ]);
+                    setFetchAgain(!fetchAgain);
+                }
             } else {
                 setMessages([ ...messages, message ]);
             }
@@ -159,9 +180,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                     <ScrollableChat messages={messages} />
                 </div>}
                 <FormControl onKeyDown={sendMessage} isRequired mt={3}>
-                    <Box background={"blackAlpha.500"} color={"white"} borderRadius={"3xl"} w={"38%"} p={istyping? 1:0}>
-                    {istyping ?   <Text ml={4}><ChatIcon m={1}/>Someone is typing...</Text> : <></>}
-                    </Box>
+                    {/* <Box background={"blackAlpha.500"} color={"white"} borderRadius={"3xl"} w={"38%"} p={istyping ? 1 : 0}>
+                        {istyping && !selectedChat.isGroupChat? <Text ml={4}><ChatIcon m={1} />{`${getSender(user, selectedChat.userList)} is typing...`}</Text> : <></>}
+                        {istyping && selectedChat.isGroupChat? <Text ml={4}><ChatIcon m={1} />{ "Someone is typing..."}</Text> : <></>}
+                    </Box> */}
+                    <div>
+                    {istyping? <Lottie options={defOp} width={70} height={50} style={{ marginLeft: 0}}/> : <></>}
+                    </div>
+
                     <Input variant={"filled"} bg={"#FFFAF0"} placeholder={"Send a Message"} value={newMessage} onChange={typingHandler} isDisabled={sent ? true : false} />
                 </FormControl>
             </Box>

@@ -10,7 +10,9 @@ import ChatBox from '../Components/miscellaneous/ChatBox';
 const ChatPage = () => {
     const { user } = ChatState();
     const [ fetchAgain, setFetchAgain ] = useState(false);
-
+    useEffect(() => {
+        document.body.style.overflow = "hidden";
+      }, []);
 
 
     return (
