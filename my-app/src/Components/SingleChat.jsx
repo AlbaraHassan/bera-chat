@@ -12,7 +12,7 @@ import io from "socket.io-client";
 import Lottie from "react-lottie"
 import animationData from "./typingAnimation.json"
 
-const ENDPOINT = "https://bera-chat.herokuapp.com/";
+const ENDPOINT = "http://localhost:5000";
 let socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
