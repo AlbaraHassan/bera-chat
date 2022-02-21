@@ -165,7 +165,7 @@
     "node": "16.10.0"
   },
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "node server.js",
     "heroku buildpacks":"set mars/create-react-app"
   },
   "author": "",
