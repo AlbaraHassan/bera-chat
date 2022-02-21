@@ -166,7 +166,7 @@
   },
   "scripts": {
     "start": "node server.js",
-    "heroku buildpacks":"set mars/create-react-app"
+    "heroku buildpacks":"NPM_CONFIG_PRODUCTION=false npm install --prefix my-app && npm run build --prefix my-app"
   },
   "author": "",
   "license": "ISC"
