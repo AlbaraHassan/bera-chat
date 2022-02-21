@@ -166,7 +166,7 @@
   },
   "scripts": {
     "start": "nodemon server.js",
-    "heroku-postbuild": "cd my-app && npm install && npm run build"
+    "heroku buildpacks":"set mars/create-react-app"
   },
   "author": "",
   "license": "ISC"
