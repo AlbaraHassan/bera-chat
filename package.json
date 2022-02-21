@@ -165,11 +165,8 @@
     "node": "16.x"
   },
   "scripts": {
-    "dev": "react-scripts start",
-    "start": "serve -s build",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "start": "nodemon server.js",
+    "heroku-postbuild": "cd my-app && npm install && npm run build"
   },
   "author": "",
   "license": "ISC"
