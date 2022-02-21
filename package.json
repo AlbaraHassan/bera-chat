@@ -162,7 +162,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "heroku-postbuild": "cd my-app && npm install && npm run build"
   },
   "author": "",
   "license": "ISC"
