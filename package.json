@@ -161,6 +161,10 @@
     "yallist": "^4.0.0"
   },
   "devDependencies": {},
+
+  "engines": {
+    "node": "16.x"
+  },
   "scripts": {
     "start": "nodemon server.js",
     "heroku-postbuild": "cd my-app && npm install && npm run build"
