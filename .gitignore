@@ -5,7 +5,6 @@
 /.pnp
 .pnp.js
 /my-app/node_modules
-/my-app/build
 .env
 
 # testing
